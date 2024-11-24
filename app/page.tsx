@@ -1,101 +1,132 @@
-import Image from "next/image";
+// app/page.tsx
+"use client"
 
-export default function Home() {
+import { useState } from "react"
+import Image from "next/image"
+import { useRouter } from "next/navigation"
+
+// 引导页内容
+const onboardingSlides = [
+  {
+    id: 1,
+    title: "TaskMaster",
+    description: "Effortlessly manage your academic tasks",
+    image: "/illustrations/team.svg"
+  },
+  {
+    id: 2,
+    title: "Stay Organized",
+    description: "Keep track of all your assignments and deadlines",
+    image: "/illustrations/calendar.svg"
+  },
+  {
+    id: 3,
+    title: "Never Miss a Task",
+    description: "Get reminders for upcoming assignments",
+    image: "/illustrations/notification.svg"
+  }
+]
+
+export default function WelcomePage() {
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const router = useRouter()
+
+  const handleNext = () => {
+    if (currentSlide < onboardingSlides.length - 1) {
+      setCurrentSlide(curr => curr + 1)
+    }
+  }
+
+  const handlePrev = () => {
+    if (currentSlide > 0) {
+      setCurrentSlide(curr => curr - 1)
+    }
+  }
+
+  const handleGetStarted = () => {
+    
+    router.push('/schedule')
+  }
+
+  const slide = onboardingSlides[currentSlide]
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-white">
+      {/* Top bar with skip button */}
+      {currentSlide < onboardingSlides.length - 1 && (
+        <div className="absolute top-4 right-4">
+          <button
+            onClick={() => setCurrentSlide(onboardingSlides.length - 1)}
+            className="text-gray-500 text-sm hover:text-gray-700"
           >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            Skip
+          </button>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+      )}
+
+      <div className="w-full max-w-md space-y-8">
+        {/* Illustration */}
+        <div className="relative w-full h-64 mb-8">
           <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+            src={slide.image}
+            alt="Illustration"
+            fill
+            className="object-contain"
+            priority
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        </div>
+
+        {/* Content */}
+        <div className="space-y-6 text-center">
+          <h1 className="text-3xl font-bold tracking-tight">
+            {slide.title}
+          </h1>
+          <p className="text-lg text-gray-600">
+            {slide.description}
+          </p>
+          
+          {/* Dots indicator */}
+          <div className="flex justify-center space-x-2 py-4">
+            {onboardingSlides.map((_, index) => (
+              <div
+                key={index}
+                className={`w-2 h-2 rounded-full transition-colors ${
+                  currentSlide === index ? 'bg-teal-500' : 'bg-gray-300'
+                }`}
+              />
+            ))}
+          </div>
+
+          {/* Navigation buttons */}
+          <div className="space-y-4">
+            {currentSlide === onboardingSlides.length - 1 ? (
+              <button
+                onClick={handleGetStarted}
+                className="w-full px-6 py-3 text-base font-medium text-white bg-teal-500 rounded-full hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-colors"
+              >
+                Get Started
+              </button>
+            ) : (
+              <div className="flex gap-4">
+                {currentSlide > 0 && (
+                  <button
+                    onClick={handlePrev}
+                    className="flex-1 px-6 py-3 text-base font-medium text-teal-600 bg-white border border-teal-500 rounded-full hover:bg-teal-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-colors"
+                  >
+                    Back
+                  </button>
+                )}
+                <button
+                  onClick={handleNext}
+                  className="flex-1 px-6 py-3 text-base font-medium text-white bg-teal-500 rounded-full hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-colors"
+                >
+                  Next
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
-  );
+  )
 }

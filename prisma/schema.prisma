@@ -1,0 +1,185 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model User {
+  id            String        @id @default(cuid())
+  name          String?
+  email         String?       @unique
+  emailVerified DateTime?
+  image         String?
+  studentNumber String?       @unique
+  schoolId      String?
+  programName   String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  accounts      Account[]
+  courses       Course[]
+  courseEvents  CourseEvent[]
+  icsFiles      ICSFile[]
+  sessions      Session[]
+  academicTasks AcademicTask[]
+  school        School?       @relation(fields: [schoolId], references: [id])
+}
+
+model School {
+  id        String     @id @default(cuid())
+  name      String
+  type      SchoolType
+  domain    String     @unique
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  users     User[]
+}
+
+model Course {
+  id          String       @id @default(cuid())
+  code        String
+  name        String
+  userId      String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  academicTasks AcademicTask[]
+  user        User         @relation(fields: [userId], references: [id])
+  schedules   Schedule[]
+
+  @@unique([code, userId])
+}
+
+
+
+model Schedule {
+  id        String   @id @default(cuid())
+  courseId  String
+  dayOfWeek Int
+  startTime DateTime
+  endTime   DateTime
+  room      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  course    Course   @relation(fields: [courseId], references: [id])
+}
+
+model ICSFile {
+  id         String        @id @default(cuid())
+  fileName   String
+  uploadedAt DateTime      @default(now())
+  lastSync   DateTime      @default(now())
+  userId     String
+  events     CourseEvent[]
+  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model CourseEvent {
+  id        String   @id @default(cuid())
+  summary   String
+  startTime DateTime
+  endTime   DateTime
+  location  String?
+  icsFileId String
+  userId    String
+  dayOfWeek Int
+  color     String   @default("#808080")
+  icsFile   ICSFile  @relation(fields: [icsFileId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  academicTasks AcademicTask[]
+
+  @@index([userId])
+  @@index([icsFileId])
+}
+
+enum SchoolType {
+  University
+  College
+}
+
+enum Status {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  ARCHIVED
+}
+// add the assignment model
+enum TaskType {
+  ASSIGNMENT
+  QUIZ
+  EXAM
+  PAPER
+  PROJECT
+  OTHER
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  ARCHIVED
+}
+
+enum TaskSource {
+  CALENDAR_IMPORT
+  MANUAL_CREATE
+}
+
+// 添加新的 AcademicTask 模型
+model AcademicTask {
+  id            String         @id @default(cuid())
+  title         String
+  description   String?
+  startTime     DateTime?      
+  dueDate       DateTime       
+  status        TaskStatus     @default(PENDING)
+  taskType      TaskType       
+  source        TaskSource     
+  sourceEventId String?        
+  courseId      String?        // 改为可选
+  userId        String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  // 关联
+  course        Course?        @relation(fields: [courseId], references: [id])  // 改为可选
+  user          User           @relation(fields: [userId], references: [id])
+  courseEvent   CourseEvent?   @relation(fields: [sourceEventId], references: [id])
+}

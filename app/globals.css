@@ -2,21 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  color: var(--foreground);
-  background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -24,4 +10,170 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+ 
+@layer base {
+  :root {
+    --background: 240 25% 98%;
+    --foreground: 240 10% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+ 
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+ 
+    --primary: 174 65% 59%;
+    --primary-foreground: 355.7 100% 97.3%;
+ 
+    --secondary: 240 25% 96%;
+    --secondary-foreground: 240 5.9% 10%;
+ 
+    --muted: 240 25% 96%;
+    --muted-foreground: 240 3.8% 46.1%;
+ 
+    --accent: 226 70% 55.5%;
+    --accent-foreground: 0 0% 100%;
+ 
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 98%;
+
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 174 65% 59%;
+ 
+    --radius: 0.75rem;
+
+    /* Custom colors for courses */
+    --course-mgt: 39 100% 50%;
+    --course-ec: 174 65% 59%;
+    --course-fn: 226 70% 55.5%;
+  }
+ 
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+ 
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+ 
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+ 
+    --primary: 174 65% 59%;
+    --primary-foreground: 240 5.9% 10%;
+ 
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+ 
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+ 
+    --accent: 226 70% 55.5%;
+    --accent-foreground: 0 0% 98%;
+ 
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 98%;
+ 
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 174 65% 59%;
+  }
+}
+ 
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Custom utility classes for course colors */
+@layer utilities {
+  .bg-course-mgt {
+    background-color: hsl(var(--course-mgt));
+  }
+  .bg-course-ec {
+    background-color: hsl(var(--course-ec));
+  }
+  .bg-course-fn {
+    background-color: hsl(var(--course-fn));
+  }
+  .text-course-mgt {
+    color: hsl(var(--course-mgt));
+  }
+  .text-course-ec {
+    color: hsl(var(--course-ec));
+  }
+  .text-course-fn {
+    color: hsl(var(--course-fn));
+  }
+}
+
+/* Custom styles for the bottom navigation */
+.bottom-nav {
+  @apply fixed bottom-0 left-0 right-0 flex justify-around items-center py-2 bg-background border-t;
+}
+
+.bottom-nav-item {
+  @apply flex flex-col items-center gap-1 px-4 py-2 text-sm text-muted-foreground;
+}
+
+.bottom-nav-item.active {
+  @apply text-accent;
+}
+
+/* Custom styles for the schedule view */
+.schedule-item {
+  @apply flex items-center gap-4 p-4 bg-card rounded-lg shadow-sm;
+}
+
+.time-indicator {
+  @apply text-sm font-medium text-muted-foreground;
+}
+
+.course-title {
+  @apply text-base font-semibold;
+}
+
+.room-number {
+  @apply text-sm text-muted-foreground;
+}
+
+/* Custom styles for the assignment indicators */
+.assignment-indicator {
+  @apply inline-flex items-center justify-center w-5 h-5 text-xs text-white bg-destructive rounded-full;
+}
+
+/* Custom styles for the date selector */
+.date-selector {
+  @apply grid grid-cols-5 gap-2 p-4;
+}
+
+.date-item {
+  @apply flex flex-col items-center p-2 rounded-lg text-sm;
+}
+
+.date-item.active {
+  @apply bg-accent text-accent-foreground;
+}
+
+.date-item .day {
+  @apply font-medium;
+}
+
+.date-item .date {
+  @apply text-xs text-muted-foreground;
 }
