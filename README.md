@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Taskmaster
 
-## Getting Started
+Taskmaster is an advanced scheduling and task allocation platform designed to help users effectively manage their time and tasks. This project utilizes a modern web technology stack to provide modular and scalable functionality.
 
-First, run the development server:
+## Project Overview
 
-```bash
+Taskmaster offers a variety of features to assist users in managing personal and team task schedules, including task assignments, schedule management, real-time sync settings, and more.
+
+## Project Structure
+
+The codebase is organized as follows:
+
+- **app/**: Contains user interface (UI) related code.
+  - **assignments/**: Related to task assignment functionality.
+    - `actions.ts`: Logic and actions for task assignments.
+    - `page.tsx`: Components for the task assignment page.
+  - **schedule/**: Manages schedule organization features.
+    - `actions.ts`: Logic and actions for schedule management.
+    - `page.tsx`: Schedule management page.
+  - **settings/**: User setting modules, like sync configurations.
+    - **sync-calendar/**: Submodule for calendar synchronization.
+      - `actions.ts`: Actions for calendar syncing.
+      - `page.tsx`: Page for calendar sync settings.
+    - `actions.ts`: General settings logic and actions.
+    - `page.tsx`: Settings interface page.
+  - **timetable/**: For viewing and managing timetables.
+    - `page.tsx`: Main timetable interface.
+  - `layout.tsx`: Overall layout of the application.
+
+- **api/**: Provides backend API logic.
+  - **auth/**: API routes related to authentication.
+    - `route.ts`: Handles authentication logic.
+  - **timetable/**: API for managing the timetable.
+    - **events/**: Handles timetable events.
+      - `route.ts`: Logic processing for timetable events.
+  - **today/**: API handling today’s tasks and schedules.
+    - `route.ts`: Processing logic for today’s agenda.
+
+## Usage Instructions
+
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/royisme/taskmaster.git
+   cd taskmaster
+
+	1.	Install Dependencies:Use npm or yarn to install project dependencies:
+npm install
+# or
+yarn install
+
+	2.	Start the Development Server:Run the application in development mode:
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+	3.	Build for Production:To build the project for production, run:
+npm run build
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+	4.	Start the Production Server:Run the built application in production mode:
+npm start
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+Contributing
 
-To learn more about Next.js, take a look at the following resources:
+We welcome contributions! Please make sure to adhere to the project’s contribution guidelines.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
